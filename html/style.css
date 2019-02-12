@@ -143,3 +143,16 @@ text-align: right;
 .content--card_headingSize {
     margin-bottom: 70px 
 }
+.content--heading_active {
+    font-size: 15px;
+    font-weight: bold;
+    padding: 1px;
+}
+.content--images_image {
+    background: #eee;
+    border: 2px solid transparent;
+    padding: 4px;
+}
+.content--images_Size {
+    margin-top: 7px;
+}
