@@ -215,9 +215,6 @@ button {
     .cartBlock {
         order: 1;
     }
-    .header-ul {
-        display: none;
-    }
 }
 
 @media only screen and (max-width: 400px) {
