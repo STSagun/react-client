@@ -1,133 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Document</title>
-        <link rel="stylesheet" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
-        <link rel="stylesheet" href="/html/style.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    </head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/html/style.css">
+</head>
 <body>
     <div class="container">
-    <div class="co-header">
-        <div class="co-header--activeCheck">Checkout</div>
-        <div class="co-header--ul">
-            <ul class="co-header--flex">
-                <li>Shipping</li>
-                <li class="co-header--active">Payment Method</li>
-                <li>Confirmation</li>
-            </ul>
-        </div>
-    <div class="co-header_close"><i class="fa fa-window-close"></i></div>
+        <div class="header">
+            <div class="header-checkout">
+                <b>Checkout</b>
+            </div>
+            <div class="header-shipping">
+                <ul class="header-ul">
+                    <li>Shipping</li>
+                    <li><b>Payment Method</b></li>
+                    <li>Confirmation</li>
+                </ul>
+            </div>
+            <div class="header-close"><i class="fa fa-window-close"></i></div>   
         </div>
         <div class="content">
-            <div class="content--Pay">
-                <p class="content--wallet_heading">Wallet</p>
-                <hr>
-                <div class="content--images">
-                    <ul class="content content--images_heading">
-                        <li class="content--images_Size"><img src="/images/discover.png" alt="discover" width="180px"><p class="content--card_Size">Ending with 8899</p></li>
-                        <li class="content--images_image"><img src="/images/mastercard.png" alt="mastercard" width="180px"><p class="content--card_Size">Ending with 8899</p></li>
-                        <li class="content--images_Size"><img src="/images/visa.png" alt="visa" width="180px"><p class="content--card_Size">Ending with 8899</p></li>
+            <div class="section">
+                <p class="content-section_heading">Wallet</p>
+                <hr class="content__hr">
+                <div class="content-section_images">
+                    <ul>
+                        <li class="section-images"> 
+                            <img class="card-images" src="../images/discover.png" alt="">
+                            <p class="card-images__text">Ending with 8899</p>
+                        </li>
+                        <li class="section-image card--active">
+                            <img class="card-images " src="../images/mastercard.png" alt="">
+                            <p class="card-images__text card-images_active-text">Ending with 8899</p>
+                        </li>
+                        <li class="section-image">
+                            <img class="card-images" src="../images/visa.png" alt="">
+                            <p class="card-images__text">Ending with 8899</p>
+                        </li>
                     </ul>
                 </div>
-            <div>
-                <p class="content--newCard_heading">New Card</p>
-                <hr>
-                <div class="form-body">
-                    <input type="text" class="form-body_main form-body_input" placeholder="Name On Card">
-                    <input type="text" class="form-body_main form-body_input" placeholder="xxxx-xxxx-xxxx-xxxx"><br>
-                    <input type="text" class="form-body_main form-body_input_Month" placeholder="MM / YY" />
-                    <input type="text" class="form-body_main form-body_input_CVV" placeholder="CVV" />
-                    <input type="submit" value="Continue" class="btn">
-                </div>
-            </div>
-        </div>
-        <div class="content--card_heading">
-            <div class="content--card_headingSize">
-                <div class="content--card_Flex">
-                    <div class="content--card_Product1">
-                        <img class="Content_images" src="/images/mobile-holder.jpg" alt="mobile-holder" >
-                        <div class="content--card_ProductMargin">
-                            <p class="content--card_active">Mobile Holder<br></p>
-                            <span class="content--card_span"><i>Black</i></span><br>
-                            <p class="content--card_Size">Quantity:1</p>
+                <p class="content-section_heading">New Card</p>  
+                <hr class="content__hr"> 
+                <div class="new-card">
+                        <input class="new-card__input" type="text" placeholder="Name on Card">
+                        <input class="new-card__input" type="text" placeholder="XXXX-XXXX-XXXX-XXXX">
+                        <div class="input--security">
+                            <input class="new-card__input" type="text" placeholder="MM/YY">
+                            <input class="new-card__input" type="text" placeholder="CVV">
                         </div>
-                    </div>
-                    <div class="content--card_price">
-                        $10
-                    </div>
-                </div>
-                    <hr>
-                <div class="content--card_Flex">
-                    <div class="content--card_Product1">
-                    <img class="Content_images" src="/images/rado.jpg" alt="rado" height="55px">
-                        <div class="content--card_ProductMargin">
-                            <p class="content--card_active">Rado Watch<br></p>
-                            <span class="content--card_span"><i>Black</i></span><br>
-                            <p class="content--card_Size">Quantity:1</p>
-                        </div>
-                    </div>
-                    <div class="content--card_price">
-                        $10
-                    </div>
-                </div>
-                <hr>
-            <div class="content--card_Flex">
-                <div class="content--card_Product1">
-                    <img class="Content_images" src="/images/usb-c-2-micro.jpeg" alt="usb-c-2-micro">
-                    <div class="content--card_ProductMargin">
-                        <p class="content--card_active">C type to Micro Converter<br></p>
-                        <span class="content--card_span"><i>Black</i></span><br>
-                        <p class="content--card_Size">Quantity:1</p>
-                    </div>
-                </div>
-                <div class="content--card_price">
-                    $10
-                </div>
-                </div>
-                <hr>
-            <div class="content--card_Flex">
-                <div class="content--card_Product1">
-                    <img class="Content_images" src="/images/hard-case.jpg" alt="Mobile Case" >
-                    <div class="content--card_ProductMargin">
-                        <p class="content--card_active">Mobile Case<br></p>
-                        <span class="content--card_span"><i>Black</i></span><br>
-                        <p class="content--card_Size">Quantity:1</p>
-                    </div>
-                </div>
-                <div class="content--card_price">
-                    $10
+                        <button class="button button--green">
+                            CONTINUE
+                        </button>
                 </div>
             </div>
-            </div>
-            <div class="content--card_Nav">
-                <hr>
-                <div class="content--card_Flex">
-                    <p >Sub Total</p>
-                    <span>$100</span>
-                </div>
-                <br>
-                <div class="content--card_Flex">
-                    <p >Shipping</p>
-                    <span>$10</span>
-                </div>
-                <br>
-                <div class="content--card_Flex">
-                    <p>Taxes</p>
-                    <span>$5</span>
-                </div>
-                <br>
-                <hr>
-                    <div class="content--card_Flex">
-                        <p><b>Total</b></p>
-                        <span>$115</span>
+            <div class="cartBlock">
+                    <div class="cartBlock--products">
+                        <ul class="cartBlock--list">
+                            <li class="inline">
+                                <div class="cartBlock-image_Container">
+                                    <img src="../images/mobile-holder.jpg" class="cartBlock--Images" alt="">
+                                </div>
+                                <div class="cardBlock--description">
+                                    <h5 class="cardBlock_desc--bold cardBlock_desc--black cardBlock_desc--p">Mobile Holder</h5>
+                                    <p>Black</p>
+                                    <p class="cardBlock-desc--text-bold">Quantity 1</p>
+                                </div>
+                            </li>
+                            <li>
+                                <p class="cardBlock-Price ">$ 10.00</p>
+                            </li>
+                        </ul>
+                        <hr class="content__hr" />
+                        <ul class="cartBlock--list">
+                            <li class="inline">
+                                <div class="cartBlock-image_Container">
+                                    <img src="../images/rado.jpg" class="cartBlock--Images" alt="">
+                                </div>
+                                <div class="cardBlock--description">
+                                    <h5 class="cardBlock_desc--bold cardBlock_desc--black cardBlock_desc--p">Rado Watch</h5>
+                                    <p>Black</p>
+                                    <p class="cardBlock-desc--text-bold">Quantity 1</p>
+                                </div>
+                            </li>
+                            <li>
+                                <p class="cardBlock-Price ">$ 10.00</p>
+                            </li>
+                        </ul>
+                        <hr class="content__hr" />
+                        <ul class="cartBlock--list">
+                            <li class="inline">
+                                <div class="cartBlock-image_Container">
+                                    <img src="../images/rado.jpg" class="cartBlock--Images" alt="">
+                                </div>
+                                <div class="cardBlock--description">
+                                    <h5 class="cardBlock_desc--bold cardBlock_desc--black cardBlock_desc--p">C type to Micro Convertor</h5>
+                                    <p>Black</p>
+                                    <p class="cardBlock-desc--text-bold">Quantity 1</p>
+                                </div>
+                            </li>
+                            <li>
+                                <p class="cardBlock-Price">$ 10.00</p>                                
+                            </li>
+                        </ul>
+                        <hr class="content__hr" />
+                        <ul class="cartBlock--list">
+                            <li class="inline">
+                                <div class="cartBlock-image_Container ">
+                                    <img src="../images/hard-case.jpg" class="cartBlock--Images " alt="">
+                                </div>
+                                <div class="cardBlock--description">
+                                    <h5 class="cardBlock_desc--bold cardBlock_desc--black cardBlock_desc--p">Mobile Case</h5>
+                                    <p>Black</p>
+                                    <p class="cardBlock-desc--text-bold">Quantity 1</p>
+                                </div>
+                            </li>
+                            <li>
+                                <p class="cardBlock-Price">$ 10.00</p>                                
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="Pricing">
+                        <hr class="content__hr"/>
+                        <ul class="cartBlock--list price-list--font">
+                            <li>Sub total</li>
+                            <li>$ 100.00</li>
+                        </ul>
+                        <ul class="cartBlock--list price-list--font">
+                            <li>Shipping</li>
+                            <li>$ 10.00</li>
+                        </ul>
+                        <ul class="cartBlock--list price-list--font">
+                            <li>Taxes</li>
+                            <li>$ 5.00</li>
+                        </ul>
+                        <hr class="content__hr" />
+                        <ul class="co-cb--text-bold cartBlock--list">
+                            <li>Total</li>
+                            <li>$ 115.00</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</body>
+ </body>
 </html>
