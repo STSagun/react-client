@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import React from 'react';
 import styling from './style';
 
@@ -11,5 +11,11 @@ const TextField = (props) => {
       {(error) ? <aside style={{ color: 'red' }}>{error}</aside> : ''}
     </>
   );
+};
+TextField.propTypes = {
+  error: PropTypes.string,
+};
+TextField.defaultProps = {
+  error: '',
 };
 export default TextField;
