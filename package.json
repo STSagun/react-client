@@ -12,8 +12,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:c": "test --coverage",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.js src/**/*.jsx",
+    "lint:fix":"npm run lint -- --fix",
     "commit": "npx git-cz"
   },
     "hooks": {

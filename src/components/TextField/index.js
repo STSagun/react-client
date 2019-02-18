@@ -1,1 +1,1 @@
-export { default } from './TextField.jsx'
+export { default } from './TextField';
