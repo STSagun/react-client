@@ -1,5 +1,5 @@
 export function getRandomNumber(max) {
-  return (Math.random() * max);
+  return Math.floor((Math.random() * max));
 }
 export function getNextRoundRobin(total, current) {
   if (current < total - 1) {

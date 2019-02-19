@@ -61,8 +61,11 @@ export default class Slider extends Component {
     } = this.props;
     const {
       index,
-    } = this.setState;
+    } = this.state;
     const source = (banners) ? banners[index] : defaultBanner;
+    console.log(defaultBanner, 'jhdgjadsgvjvsajh', banners[index]);
+    console.log(source);
+    console.log(index);
     return (
       <>
         <div style={{ textAlign: 'center' }}>
