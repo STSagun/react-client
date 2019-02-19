@@ -1,9 +1,8 @@
 /node_modules
 /.pnp
 .pnp.js
-
-# testing
 /coverage
+# testing
 
 # production
 /build
