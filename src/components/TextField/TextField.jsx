@@ -14,6 +14,8 @@ const TextField = (props) => {
 };
 TextField.propTypes = {
   error: PropTypes.string,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.string.isRequired,
 };
 TextField.defaultProps = {
   error: '',
