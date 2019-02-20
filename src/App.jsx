@@ -1,8 +1,8 @@
 import React from 'react';
-import TextFieldDemo from './pages';
+import InputDemo from './pages';
 
 const App = () => (
-  <TextFieldDemo />
+  <InputDemo />
 );
 
 export default App;
