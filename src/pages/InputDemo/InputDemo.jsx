@@ -36,6 +36,14 @@ class InputDemo extends Component {
     });
   }
 
+  handelSportOptionsChange = (event) => {
+    const { sport } = this.state;
+    this.setState({
+      cricket: (sport === 'cricket') ? event.target.value : '',
+      football: (sport === 'football') ? event.target.value : '',
+    });
+  }
+
   render() {
     const { name, sport } = this.state;
     let radio;
@@ -55,7 +63,7 @@ class InputDemo extends Component {
           ? (
             <div>
               <h4>What you do?</h4>
-              <RadioGroup options={radio} />
+              <RadioGroup options={radio} onChange={this.handelSportOptionsChange} />
             </div>
           )
           : '' }

@@ -13,7 +13,7 @@ const defaultTypes = {
   options: [],
   defaultText: '',
   value: '',
-  onChange: '',
+  onChange: () => {},
 };
 
 
@@ -41,7 +41,7 @@ export default class RadioGroup extends Component {
       <>
         { options.map(opt => (
           <div>
-            <input type="radio" name={opt} {...rest} key={opt.label} value={opt.value} />
+            <input type="radio" name={opt} {...rest} key={opt.label} value={opt.value} onChange={onChange} />
             {opt.value}
           </div>
         ))}
