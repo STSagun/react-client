@@ -6,7 +6,7 @@ const propTypes = {
   error: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
-  options: PropTypes.arrayOf(PropTypes.string),
+  options: PropTypes.arr,
   defaultText: PropTypes.string,
 };
 const defaultTypes = {
@@ -18,7 +18,7 @@ const defaultTypes = {
 };
 
 
-export default class Slider extends Component {
+export default class SelectField extends Component {
   constructor() {
     super();
     this.state = {
@@ -54,5 +54,5 @@ export default class Slider extends Component {
     );
   }
 }
-Slider.propTypes = propTypes;
-Slider.defaultProps = defaultTypes;
+SelectField.propTypes = propTypes;
+SelectField.defaultProps = defaultTypes;

@@ -40,9 +40,9 @@ export default class RadioGroup extends Component {
     return (
       <>
         { options.map(opt => (
-          <div>
+          <div key={opt.label}>
             <input type="radio" name={opt} {...rest} key={opt.label} value={opt.value} onChange={onChange} />
-            {opt.value}
+            {opt.label}
           </div>
         ))}
       </>

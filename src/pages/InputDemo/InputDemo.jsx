@@ -33,14 +33,15 @@ class InputDemo extends Component {
   handleSportChange = (event) => {
     this.setState({
       sport: event.target.value,
+      cricket: '',
+      football: '',
     });
   }
 
   handelSportOptionsChange = (event) => {
     const { sport } = this.state;
     this.setState({
-      cricket: (sport === 'cricket') ? event.target.value : '',
-      football: (sport === 'football') ? event.target.value : '',
+      [sport]: event.target.value,
     });
   }
 
