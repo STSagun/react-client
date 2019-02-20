@@ -1,7 +1,7 @@
 const Styling = {
   base: {
     height: '30px',
-    width: '100%',
+    width: '91.5%',
   },
 };
 export default Styling;

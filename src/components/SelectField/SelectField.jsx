@@ -6,12 +6,12 @@ const propTypes = {
   error: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
-  options: PropTypes.arr,
+  options: PropTypes.arrayOf(PropTypes.shape()),
   defaultText: PropTypes.string,
 };
 const defaultTypes = {
   error: '',
-  options: [],
+  options: [{}],
   defaultText: 'select',
   value: '',
   onChange: () => {},
