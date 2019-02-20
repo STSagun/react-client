@@ -4,8 +4,8 @@ import Styling from './style';
 
 const propTypes = {
   error: PropTypes.string,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
   options: PropTypes.arrayOf(PropTypes.string),
   defaultText: PropTypes.string,
 };
@@ -13,6 +13,8 @@ const defaultTypes = {
   error: '',
   options: [],
   defaultText: 'select',
+  value: '',
+  onChange: () => {},
 };
 
 
