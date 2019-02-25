@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import Styling from './style';
 
 const propTypes = {
-  error: PropTypes.string,
+  err: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
   options: PropTypes.arrayOf(PropTypes.shape()),
   defaultText: PropTypes.string,
 };
 const defaultTypes = {
-  error: '',
+  err: '',
   options: [{}],
   defaultText: 'select',
   value: '',
@@ -31,7 +31,7 @@ export default class SelectField extends Component {
 
   render() {
     const {
-      error,
+      err,
       value,
       onChange,
       options,
@@ -39,18 +39,21 @@ export default class SelectField extends Component {
       ...rest
     } = this.props;
     return (
-      <select {...rest} style={{ ...Styling.base }} onChange={onChange}>
-        <option value={defaultText}>
-          {defaultText}
-        </option>
-        {
-          options.map(opt => (
-            <option key={opt.label} value={opt.value}>
-              {opt.label}
-            </option>
-          ))
-        }
-      </select>
+      <>
+        <select {...rest} style={{ ...Styling.base }} onChange={onChange}>
+          <option disabled selected>
+            {defaultText}
+          </option>
+          {
+            options.map(opt => (
+              <option key={opt.label} value={opt.value}>
+                {opt.label}
+              </option>
+            ))
+          }
+        </select>
+        {(err) ? <aside style={{ color: 'red' }}>{err}</aside> : ''}
+      </>
     );
   }
 }

@@ -3,23 +3,23 @@ import React from 'react';
 import styling from './style';
 
 const TextField = (props) => {
-  const { error, ...rest } = props;
-  const errorStyle = (error) ? styling.error : {};
+  const { err, ...rest } = props;
+  const errorStyle = (err) ? styling.error : {};
   return (
     <>
       <input type="text" {...rest} style={{ ...styling.base, ...errorStyle }} />
-      {(error) ? <aside style={{ color: 'red' }}>{error}</aside> : ''}
+      {(err) ? <aside style={{ color: 'red' }}>{err}</aside> : ''}
     </>
   );
 };
 TextField.propTypes = {
-  error: PropTypes.string,
+  err: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
 };
 TextField.defaultProps = {
   value: '',
-  error: '',
+  err: '',
   onChange: () => {},
 };
 export default TextField;
