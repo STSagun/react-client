@@ -59,6 +59,7 @@ class AddDialog extends Component {
       maxWidth: 'md',
       name: '',
       showPassword: false,
+      showConfirmPassword: false,
       passwordConfirmation: '',
       error: {
         name: '', email: '', password: '', passwordConfirmation: '',
@@ -155,12 +156,16 @@ class AddDialog extends Component {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
 
+  handleClickShowConfirmPassword = () => {
+    this.setState(state => ({ showConfirmPassword: !state.showConfirmPassword }));
+  };
+
   render() {
     const {
       classes, open, onClose, onSubmit,
     } = this.props;
     const {
-      showPassword, name, error, email, password, passwordConfirmation, fullWidth, maxWidth,
+      showPassword, showConfirmPassword, name, error, email, password, passwordConfirmation, fullWidth, maxWidth,
     } = this.state;
     return (
       <Dialog
@@ -261,16 +266,16 @@ class AddDialog extends Component {
                     value={passwordConfirmation}
                     margin="normal"
                     variant="outlined"
-                    type={showPassword ? 'text' : 'Confirm-password'}
+                    type={showConfirmPassword ? 'text' : 'password'}
                     onChange={this.handlerChange('passwordConfirmation')}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="start">
                           <IconButton
                             aria-label="Toggle password visibility"
-                            onClick={this.handleClickShowPassword}
+                            onClick={this.handleClickShowConfirmPassword}
                           >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
                         </InputAdornment>
                       ),
