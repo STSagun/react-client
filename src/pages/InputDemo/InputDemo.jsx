@@ -97,24 +97,17 @@ class InputDemo extends Component {
     let check = 0;
     let touchCheck = 0;
     Object.keys(hasError).forEach((element) => {
-      if (hasError[element] === false) {
-        check += 1;
-      }
+      if (!hasError[element]) check += 1;
     });
     Object.keys(touched).forEach((element) => {
-      if (touched[element] === true) {
-        touchCheck += 1;
-      }
+      if (touched[element]) touchCheck += 1;
     });
-    if (check === 3 && touchCheck === 3) {
-      return true;
-    }
-    return false;
+    return (check === 3 && touchCheck === 3);
   }
 
   isTouched = () => {
     const { touched } = this.state;
-    return !!Object.keys(touched).length;
+    return Object.keys(touched).length;
   }
 
 
@@ -127,7 +120,6 @@ class InputDemo extends Component {
       name,
       sport, error,
     } = this.state;
-    console.log(this.state);
     let radio;
     if (sport === 'cricket') {
       radio = cricketArr;
