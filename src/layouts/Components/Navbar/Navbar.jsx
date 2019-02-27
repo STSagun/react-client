@@ -5,6 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const styles = {
   root: {
@@ -16,6 +17,10 @@ const styles = {
   },
   button: {
     marginLeft: '25px',
+  },
+  style: {
+    textDecoration: 'none',
+    color: 'white',
   },
 };
 
@@ -40,10 +45,10 @@ class Navbar extends Component {
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Trainee Portal
             </Typography>
-            <Button color="inherit">TRAINEE</Button>
-            <Button color="inherit">TEXTFIELD DEMO</Button>
-            <Button color="inherit">INPUT DEMO</Button>
-            <Button color="inherit">CHILDREN DEMO</Button>
+            <Button color="inherit"><Link to="/trainee" className={classes.style}>TRAINEE</Link></Button>
+            <Button color="inherit"><Link to="/textfield-demo" className={classes.style}>TEXTFIELD DEMO</Link></Button>
+            <Button color="inherit"><Link to="/input-demo" className={classes.style}>INPUT DEMO</Link></Button>
+            <Button color="inherit"><Link to="/children-demo" className={classes.style}>CHILDREN DEMO</Link></Button>
             <Button color="inherit" className={classes.button}>LOGOUT</Button>
           </Toolbar>
         </AppBar>

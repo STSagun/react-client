@@ -146,6 +146,8 @@ class Login extends Component {
       if (touched[element] === true) touchCheck += 1;
     });
     if (check === 2 && touchCheck === 2) return true;
+
+    return false;
   }
 
   isTouched = () => {
