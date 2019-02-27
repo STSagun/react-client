@@ -11,9 +11,9 @@ import Login from './pages/Login';
 const App = () => (
   <MuiThemeProvider theme={theme}>
     <Typography>
-      <CssBaseline />
-      <Navbar />
-      {/* <Login /> */}
+      {/* <CssBaseline />
+      <Navbar /> */}
+      <Login />
       <Trainee />
     </Typography>
   </MuiThemeProvider>

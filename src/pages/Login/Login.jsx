@@ -48,14 +48,21 @@ const styles = theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing.unit,
   },
+  textField: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing.unit,
+  },
   submit: {
     marginTop: theme.spacing.unit * 3,
+  },
+  password: {
+    padding: 0,
   },
 });
 function getValidationSchema() {
   return yup.object().shape({
     email: yup.string().email('E-mail is not valid!').required('email is required field'),
-    password: yup.string().min(8, 'Password has to be longer than 8 characters!').required('password is required field').matches(/[a-z]/, 'at least one lowercase char')
+    password: yup.string().min(8, 'Password has to be longer than 8 characters!').required('Password is required field').matches(/[a-z]/, 'at least one lowercase char')
       .matches(/[A-Z]/, 'at least one uppercase char')
       .matches(/[a-zA-Z]+[^a-zA-Z\s]+/, 'at least 1 number or special char (@,!,#, etc).'),
 
@@ -143,7 +150,7 @@ class Login extends Component {
 
   isTouched = () => {
     const { touched } = this.state;
-    return Object.keys(touched).length;
+    return !!Object.keys(touched).length;
   }
 
 
@@ -176,7 +183,6 @@ class Login extends Component {
           <form className={classes.form}>
             <TextField
               error={(error.email) && error}
-              fullWidth
               id="outlined-email-input"
               label="Email"
               className={classes.textField}
@@ -199,10 +205,10 @@ class Login extends Component {
             {(error.email) ? <aside className={classes.error}>{error.email}</aside> : ''}
             <TextField
               error={(error.password) && error}
+              className={classes.textField}
               id="outlined-password-input"
               label="Password"
               value={password}
-              className={classes.textField}
               autoComplete="current-password"
               margin="normal"
               variant="outlined"
@@ -210,9 +216,10 @@ class Login extends Component {
               type={showPassword ? 'text' : 'password'}
               onChange={this.handlerChange('password')}
               InputProps={{
-                endAdornment: (
+                startAdornment: (
                   <InputAdornment position="start">
                     <IconButton
+                      className={classes.password}
                       aria-label="Toggle password visibility"
                       onClick={this.handleClickShowPassword}
                     >
