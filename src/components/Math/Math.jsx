@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const propTypes = {
@@ -10,34 +10,25 @@ const propTypes = {
 const defaultTypes = {
   children: () => {},
 };
-export default class Math extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  calculateFunction = (first, second, operator) => {
-    if (operator === '+') return first + second;
-    if (operator === '-') return first - second;
-    if (operator === '/') return (second === 0) ? 'infinity' : (first / second);
-    return 'Invalid Operation';
-  }
-
-  render() {
-    const {
-      first,
-      second,
-      operator,
-      children,
-    } = this.props;
-    const result = this.calculateFunction(first, second, operator);
-    return (
-      <div>
-        { children(first, second, operator, result) }
-      </div>
-    );
-  }
+const calculateFunction = (first, second, operator) => {
+  if (operator === '+') return first + second;
+  if (operator === '-') return first - second;
+  if (operator === '/') return (second === 0) ? 'infinity' : (first / second);
+  return 'Invalid Operation';
+};
+export default function Math(props) {
+  const {
+    first,
+    second,
+    operator,
+    children,
+  } = props;
+  const result = calculateFunction(first, second, operator);
+  return (
+    <div>
+      { children(first, second, operator, result) }
+    </div>
+  );
 }
 Math.propTypes = propTypes;
 Math.defaultProps = defaultTypes;

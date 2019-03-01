@@ -4,6 +4,8 @@ import {
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { TraineeList, TraineDetail } from './index';
+import trainees from './Data/trainee';
+import STable from './Components/Tabel/STabel';
 
 class Trainee extends Component {
   constructor(props) {
@@ -19,8 +21,6 @@ class Trainee extends Component {
         <Switch>
           <Route exact path={`${match.path}`} component={TraineeList} />
           <Route exact path={`${match.path}/:id`} component={TraineDetail} />
-
-
         </Switch>
       </>
     );

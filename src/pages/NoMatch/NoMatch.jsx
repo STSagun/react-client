@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
@@ -14,28 +14,20 @@ const styles = () => ({
   },
 
 });
-class NoMatch extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  render() {
-    const {
-      classes,
-    } = this.props;
-    return (
-      <div className={classes.div}>
-        <Typography component="h2" variant="h2" gutterBottom>
+function NoMatch(props) {
+  const {
+    classes,
+  } = props;
+  return (
+    <div className={classes.div}>
+      <Typography component="h2" variant="h2" gutterBottom>
           Not Found
-        </Typography>
-        <Typography variant="subheading" gutterBottom>
+      </Typography>
+      <Typography variant="subheading" gutterBottom>
         Seems like for the page you are looking after does not exist
-        </Typography>
-      </div>
-    );
-  }
+      </Typography>
+    </div>
+  );
 }
 NoMatch.propTypes = {
   classes: PropTypes.shape().isRequired,
