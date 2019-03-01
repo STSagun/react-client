@@ -4,7 +4,7 @@ import {
   Route, BrowserRouter as Router, Switch, Redirect,
 } from 'react-router-dom';
 import theme from './theme';
-import Trainee from './pages/Trainee/Trainee';
+import { Trainee } from './pages/Trainee/index';
 import PrivateRoutes, { AuthRoutes } from './routes/index';
 import TextFieldDemo from './pages/TextFieldDemo/TextFieldDemo';
 import InputDemo from './pages/InputDemo/InputDemo';
@@ -21,7 +21,7 @@ const App = () => (
           <Redirect to="/trainee" />
         </Route>
         <AuthRoutes exact path="/login" component={Login} />
-        <PrivateRoutes exact path="/trainee" component={Trainee} />
+        <PrivateRoutes path="/trainee" component={Trainee} />
         <PrivateRoutes path="/textfield-demo" component={TextFieldDemo} />
         <PrivateRoutes path="/input-demo" component={InputDemo} />
         <PrivateRoutes path="/children-Demo" component={ChildrenDemo} />
