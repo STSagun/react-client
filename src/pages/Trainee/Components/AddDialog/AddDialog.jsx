@@ -31,7 +31,7 @@ function getValidationSchema() {
 
   });
 }
-const styles = theme => ({
+const styles = () => ({
   eye: {
     cursor: 'pointer',
   },
@@ -140,6 +140,7 @@ class AddDialog extends Component {
       if (touched[element] === true) touchCheck += 1;
     });
     if (check === 4 && touchCheck === 4) return true;
+    return false;
   }
 
   isTouched = () => {
@@ -165,7 +166,8 @@ class AddDialog extends Component {
       classes, open, onClose, onSubmit,
     } = this.props;
     const {
-      showPassword, showConfirmPassword, name, error, email, password, passwordConfirmation, fullWidth, maxWidth,
+      showPassword, showConfirmPassword, name, error, email, password,
+      passwordConfirmation, fullWidth, maxWidth,
     } = this.state;
     return (
       <Dialog
@@ -225,7 +227,7 @@ class AddDialog extends Component {
                 }}
 
               />
-              {(error.email) ? <p className={classes.error}>{error.email}</p> : ''}
+              {(error.email) ? <aside className={classes.error}>{error.email}</aside> : ''}
               <Grid container spacing={24}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -254,7 +256,7 @@ class AddDialog extends Component {
                     }}
 
                   />
-                  {(error.password) ? <p className={classes.error}>{error.password}</p> : ''}
+                  {(error.password) ? <aside className={classes.error}>{error.password}</aside> : ''}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -283,7 +285,7 @@ class AddDialog extends Component {
 
                   />
 
-                  {(error.passwordConfirmation) ? <p className={classes.error}>{error.passwordConfirmation}</p> : ''}
+                  {(error.passwordConfirmation) ? <aside className={classes.error}>{error.passwordConfirmation}</aside> : ''}
 
                 </Grid>
               </Grid>
