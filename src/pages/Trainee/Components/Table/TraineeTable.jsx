@@ -20,6 +20,12 @@ const styles = theme => ({
   },
   tableRow: {
     cursor: 'pointer',
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.grey[100],
+    },
+    '&:hover': {
+      backgroundColor: theme.palette.grey[200],
+    },
   },
 });
 class TraineeTable extends React.Component {
@@ -29,9 +35,6 @@ class TraineeTable extends React.Component {
     };
   }
 
-  getStripedStyle = index => (
-    { background: index % 2 ? '#f2f2f2' : 'white' }
-  )
 
   createSortHandler = property => (event) => {
     const { onSort } = this.props;
@@ -45,7 +48,6 @@ class TraineeTable extends React.Component {
     } = this.props;
     return (
       <>
-
         <Paper className={classes.root}>
           <Table className={classes.table} key={id} onRowSelection={onSelect}>
             <TableHead>
@@ -64,12 +66,10 @@ class TraineeTable extends React.Component {
                 ))}
               </TableRow>
             </TableHead>
-            <TableBody>
-              {data.map((row, index) => (
+            <TableBody stripedRows>
+              {data.map(row => (
                 <TableRow
                   className={classes.tableRow}
-                  style={{ ...this.getStripedStyle(index) }}
-                  hover
                   key={row.id}
                   onClick={() => onSelect(row.id)}
                 >
