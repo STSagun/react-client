@@ -4,8 +4,7 @@ import {
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { TraineeList, TraineDetail } from './index';
-import trainees from './Data/trainee';
-import STable from './Components/Tabel/STabel';
+
 
 class Trainee extends Component {
   constructor(props) {
