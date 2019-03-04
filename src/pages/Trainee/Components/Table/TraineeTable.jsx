@@ -29,10 +29,15 @@ class TraineeTable extends React.Component {
     };
   }
 
+  getStripedStyle = index => (
+    { background: index % 2 ? '#f2f2f2' : 'white' }
+  )
+
   createSortHandler = property => (event) => {
     const { onSort } = this.props;
     onSort(event, property);
-  };
+  }
+
 
   render() {
     const {
@@ -60,9 +65,10 @@ class TraineeTable extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map(row => (
+              {data.map((row, index) => (
                 <TableRow
                   className={classes.tableRow}
+                  style={{ ...this.getStripedStyle(index) }}
                   hover
                   key={row.id}
                   onClick={() => onSelect(row.id)}
