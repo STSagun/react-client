@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { AddDialog } from './Components';
 import trainees from './Data/trainee';
 import TraineeTable from './Components/Table/TraineeTable';
+import RemoveDialog from './Components/AddDialog/RemoveDialog';
+import EditDialog from './Components/AddDialog/EditDialog';
 
 class TraineeList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
+      page: 0,
+      rowsPerPage: 3,
+      openRemove: false,
+      openEdit: false,
+      data: {},
     };
   }
 
@@ -21,12 +30,14 @@ class TraineeList extends Component {
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ open: false, openRemove: false, openEdit: false });
   };
 
+
   Submit = (...values) => {
-    this.setState({ open: false });
-    console.log(...values);
+    this.setState({ open: false, openRemove: false, openEdit: false });
+    const value = Object.assign(values);
+    console.log(value);
   };
 
   handleSelect = (check) => {
@@ -46,8 +57,22 @@ class TraineeList extends Component {
     this.setState({ order: orderChange, orderBy: orderByChange });
   };
 
+  handleChangePage = (event, page) => {
+    this.setState({ page });
+  };
+
+  handleRemoveDialogOpen = (data) => {
+    this.setState({ openRemove: true, data: { ...data } });
+  }
+
+  handleEditDialogOpen = (data) => {
+    this.setState({ openEdit: true, data: { ...data } });
+  }
+
   render() {
-    const { open, order, orderBy } = this.state;
+    const {
+      open, order, orderBy, page, rowsPerPage, openRemove, openEdit, data,
+    } = this.state;
     return (
       <>
         <div style={{ textAlign: 'right' }}>
@@ -75,15 +100,41 @@ class TraineeList extends Component {
               format: this.getDateFormatted,
             },
           ]}
+          actions={[
+            {
+              icon: <EditIcon />,
+              handler: this.handleEditDialogOpen,
+            },
+            {
+              icon: <DeleteIcon />,
+              handler: this.handleRemoveDialogOpen,
+            },
+          ]}
           orderBy={orderBy}
           order={order}
           onSort={this.handleSort}
           onSelect={this.handleSelect}
+          Count={100}
+          page={page}
+          onChangePage={this.handleChangePage}
+          rowsPerPage={rowsPerPage}
         />
         <AddDialog
           open={open}
           onClose={this.handleClose}
           onSubmit={this.Submit}
+        />
+        <RemoveDialog
+          open={openRemove}
+          onClose={this.handleClose}
+          onSubmit={this.Submit}
+          data={data}
+        />
+        <EditDialog
+          open={openEdit}
+          onClose={this.handleClose}
+          onSubmit={this.Submit}
+          data={data}
         />
       </>
     );
