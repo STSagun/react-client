@@ -14,6 +14,8 @@ class TraineeList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      order: '',
+      orderBy: '',
       open: false,
       page: 0,
       rowsPerPage: 3,
@@ -114,7 +116,7 @@ class TraineeList extends Component {
           order={order}
           onSort={this.handleSort}
           onSelect={this.handleSelect}
-          Count={100}
+          Count={trainees.length}
           page={page}
           onChangePage={this.handleChangePage}
           rowsPerPage={rowsPerPage}
@@ -150,7 +152,7 @@ class TraineeList extends Component {
   }
 }
 TraineeList.propTypes = {
-  history: PropTypes.objectOf.isRequired,
+  history: PropTypes.objectOf(Object).isRequired,
 };
 
 export default TraineeList;

@@ -68,7 +68,7 @@ class TraineeTable extends React.Component {
     return (
       <>
         <Paper className={classes.root}>
-          <Table className={classes.table} key={id} onRowSelection={onSelect}>
+          <Table className={classes.table} key={id} >
             <TableHead>
               <TableRow>
                 { columns.map(opt => (
@@ -77,7 +77,6 @@ class TraineeTable extends React.Component {
                       active={orderBy === opt.field}
                       direction={order}
                       onClick={this.createSortHandler(opt.field)}
-
                     >
                       {opt.label || opt.field}
                     </TableSortLabel>
@@ -87,7 +86,7 @@ class TraineeTable extends React.Component {
                 <TableCell />
               </TableRow>
             </TableHead>
-            <TableBody stripedRows>
+            <TableBody>
               {data
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(row => (
@@ -138,20 +137,27 @@ class TraineeTable extends React.Component {
     );
   }
 }
+TraineeTable.defaultProps = {
+  order: '',
+  orderBy: '',
+  Count: '',
+  page: 0,
+  rowsPerPage: '',
+};
 TraineeTable.propTypes = {
   classes: PropTypes.shape().isRequired,
   id: PropTypes.string.isRequired,
-  data: PropTypes.arrayOf.isRequired,
-  columns: PropTypes.objectOf.isRequired,
-  actions: PropTypes.objectOf.isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+  actions: PropTypes.arrayOf(PropTypes.object).isRequired,
   onSelect: PropTypes.func.isRequired,
   onSort: PropTypes.func.isRequired,
-  order: PropTypes.string.isRequired,
-  orderBy: PropTypes.string.isRequired,
-  page: PropTypes.string.isRequired,
-  Count: PropTypes.string.isRequired,
+  order: PropTypes.string,
+  orderBy: PropTypes.string,
+  page: PropTypes.number,
+  Count: PropTypes.number,
   onChangePage: PropTypes.func.isRequired,
-  rowsPerPage: PropTypes.string.isRequired,
+  rowsPerPage: PropTypes.number,
 };
 
 export default withStyles(styles)(TraineeTable);
