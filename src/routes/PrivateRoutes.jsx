@@ -14,7 +14,7 @@ const PrivateRoutes = ({ component: Component, ...rest }) => (
   />
 );
 PrivateRoutes.propTypes = {
-  component: PropTypes.element.isRequired,
+  component: PropTypes.func.isRequired,
 };
 
 
