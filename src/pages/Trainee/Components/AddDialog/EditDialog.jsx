@@ -42,15 +42,18 @@ const propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  data: PropTypes.objectOf.isRequired,
+  data: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 class EditDialog extends Component {
   constructor(props) {
     super(props);
+    const { data } = this.props;
+    const { name, email } = data;
     this.state = {
       maxWidth: 'lg',
-      name: '',
+      name,
+      email,
       error: {
         name: '', email: '',
       },
@@ -137,7 +140,7 @@ class EditDialog extends Component {
 
   render() {
     const {
-      classes, open, onClose, onSubmit, data,
+      classes, open, onClose, onSubmit,
     } = this.props;
     const {
       name, error, email, maxWidth,
@@ -166,7 +169,7 @@ class EditDialog extends Component {
                 onChange={this.handlerChange('name')}
                 margin="normal"
                 variant="outlined"
-                defaultValue={data.name}
+                value={name}
                 onBlur={() => this.onBlur('name')}
                 InputProps={{
                   startAdornment: (
@@ -186,7 +189,7 @@ class EditDialog extends Component {
                 className={classes.textField}
                 onChange={this.handlerChange('email')}
                 type="email"
-                defaultValue={data.email}
+                value={email}
                 name="email"
                 onBlur={() => this.onBlur('email')}
                 autoComplete="email"

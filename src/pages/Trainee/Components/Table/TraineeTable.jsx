@@ -65,7 +65,6 @@ class TraineeTable extends React.Component {
     const {
       classes, id, columns, data, onSelect, order, orderBy, page, Count, onChangePage, rowsPerPage,
     } = this.props;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     return (
       <>
         <Paper className={classes.root}>
@@ -117,12 +116,6 @@ class TraineeTable extends React.Component {
                   </TableRow>
 
                 ))}
-
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
 

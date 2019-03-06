@@ -19,7 +19,7 @@ class TraineeList extends Component {
       rowsPerPage: 3,
       openRemove: false,
       openEdit: false,
-      data: {},
+      data: '',
     };
   }
 
@@ -61,12 +61,12 @@ class TraineeList extends Component {
     this.setState({ page });
   };
 
-  handleRemoveDialogOpen = (data) => {
-    this.setState({ openRemove: true, data: { ...data } });
+  handleRemoveDialogOpen = (value) => {
+    this.setState({ openRemove: true, data: value });
   }
 
-  handleEditDialogOpen = (data) => {
-    this.setState({ openEdit: true, data: { ...data } });
+  handleEditDialogOpen = (value) => {
+    this.setState({ openEdit: true, data: value });
   }
 
   render() {
@@ -119,22 +119,31 @@ class TraineeList extends Component {
           onChangePage={this.handleChangePage}
           rowsPerPage={rowsPerPage}
         />
+
+        {
+          (data)
+            ? (
+              <>
+                <RemoveDialog
+                  open={openRemove}
+                  onClose={this.handleClose}
+                  onSubmit={this.Submit}
+                  data={data}
+                />
+
+                <EditDialog
+                  open={openEdit}
+                  onClose={this.handleClose}
+                  onSubmit={this.Submit}
+                  data={data}
+                />
+              </>
+            ) : ''
+        }
         <AddDialog
           open={open}
           onClose={this.handleClose}
           onSubmit={this.Submit}
-        />
-        <RemoveDialog
-          open={openRemove}
-          onClose={this.handleClose}
-          onSubmit={this.Submit}
-          data={data}
-        />
-        <EditDialog
-          open={openEdit}
-          onClose={this.handleClose}
-          onSubmit={this.Submit}
-          data={data}
         />
       </>
     );
