@@ -13,6 +13,7 @@ import Person from '@material-ui/icons/Person';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Email from '@material-ui/icons/Email';
 import * as yup from 'yup';
+import { SharedSnackbarConsumer } from '../../../../Contexts/SnackBarProvider/SnackBarProvider';
 
 
 function getValidationSchema() {
@@ -147,76 +148,77 @@ class EditDialog extends Component {
     } = this.state;
 
     return (
-      <Dialog
-        fullWidth
-        maxWidth={maxWidth}
-        open={open}
-        onClose={onClose}
-        onSubmit={onSubmit}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Edit Trainee</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+      <SharedSnackbarConsumer>
+        {({ openSnackbar }) => (
+          <Dialog
+            fullWidth
+            maxWidth={maxWidth}
+            open={open}
+            onClose={onClose}
+            onSubmit={onSubmit}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">Edit Trainee</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
               Enter your trainee details
-            <form className={classes.container} noValidate autoComplete="off">
-              <TextField
-                error={(error.name) && error}
-                fullWidth
-                id="outlined-name"
-                label="Name"
-                onChange={this.handlerChange('name')}
-                margin="normal"
-                variant="outlined"
-                value={name}
-                onBlur={() => this.onBlur('name')}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Person />
-                    </InputAdornment>
-                  ),
-                }}
-
-              />
-              {(error.name) ? <p className={classes.error}>{error.name}</p> : ''}
-              <TextField
-                error={(error.email) && error}
-                fullWidth
-                id="outlined-email-input"
-                label="Email"
-                className={classes.textField}
-                onChange={this.handlerChange('email')}
-                type="email"
-                value={email}
-                name="email"
-                onBlur={() => this.onBlur('email')}
-                autoComplete="email"
-                margin="normal"
-                variant="outlined"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Email />
-                    </InputAdornment>
-                  ),
-                }}
-
-              />
-              {(error.email) ? <aside className={classes.error}>{error.email}</aside> : ''}
-            </form>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} color="primary">
+                <form className={classes.container} noValidate autoComplete="off">
+                  <TextField
+                    error={(error.name) && error}
+                    fullWidth
+                    id="outlined-name"
+                    label="Name"
+                    onChange={this.handlerChange('name')}
+                    margin="normal"
+                    variant="outlined"
+                    value={name}
+                    onBlur={() => this.onBlur('name')}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Person />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  {(error.name) ? <p className={classes.error}>{error.name}</p> : ''}
+                  <TextField
+                    error={(error.email) && error}
+                    fullWidth
+                    id="outlined-email-input"
+                    label="Email"
+                    className={classes.textField}
+                    onChange={this.handlerChange('email')}
+                    type="email"
+                    value={email}
+                    name="email"
+                    onBlur={() => this.onBlur('email')}
+                    autoComplete="email"
+                    margin="normal"
+                    variant="outlined"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Email />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  {(error.email) ? <aside className={classes.error}>{error.email}</aside> : ''}
+                </form>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={onClose} color="primary">
               Cancel
-          </Button>
-          { this.hasError() ? <Button value="Submit" onClick={() => { onSubmit(name, email); }} className={classes.submit} color="primary">Submit</Button> : <Button value="Submit" color="primary" disabled> Submit</Button>
-          }
-        </DialogActions>
-      </Dialog>
-
+              </Button>
+              { this.hasError() ? <Button value="Submit" onClick={() => { onSubmit(name, email); openSnackbar('Editied Successfully', 'success'); }} className={classes.submit} color="primary">Submit</Button> : <Button value="Submit" color="primary" disabled> Submit</Button>
+              }
+            </DialogActions>
+          </Dialog>
+        )}
+      </SharedSnackbarConsumer>
     );
   }
 }

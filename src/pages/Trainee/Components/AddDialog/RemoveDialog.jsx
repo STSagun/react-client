@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
+import { SharedSnackbarConsumer } from '../../../../Contexts/SnackBarProvider/SnackBarProvider';
 
 const styles = theme => ({
   button: {
@@ -30,32 +31,47 @@ class RemoveDialog extends React.Component {
     const {
       open, onClose, onSubmit, classes, data,
     } = this.props;
+    const traineeData = '2019-02-13T18:15:11.778Z';
     return (
-      <div>
-        <Dialog
-          open={open}
-          onClose={onClose}
-          onSubmit={onSubmit}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-          fullWidth
-        >
-          <DialogTitle id="alert-dialog-title">Remove Trainee</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
+      <SharedSnackbarConsumer>
+        {({ openSnackbar }) => (
+          <div>
+            <Dialog
+              open={open}
+              onClose={onClose}
+              onSubmit={onSubmit}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+              fullWidth
+            >
+              <DialogTitle id="alert-dialog-title">Remove Trainee</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
               Do you really want to remove the trainee?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={onClose} color="primary">
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={onClose} color="primary">
               Cancel
-            </Button>
-            <Button onClick={() => { onSubmit(data); }} variant="contained" color="primary" className={classes.button}>
+                </Button>
+                <Button
+                  onClick={() => {
+                    onSubmit(data);
+                    if (traineeData < data.createdAt) return openSnackbar('Successfully Deleted ', 'success');
+                    return openSnackbar('Can not be Deleted ', 'error');
+                  }}
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                >
               Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        )}
+      </SharedSnackbarConsumer>
+
     );
   }
 }

@@ -68,7 +68,7 @@ class TraineeTable extends React.Component {
     return (
       <>
         <Paper className={classes.root}>
-          <Table className={classes.table} key={id} >
+          <Table className={classes.table} key={id}>
             <TableHead>
               <TableRow>
                 { columns.map(opt => (
