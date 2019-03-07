@@ -32,12 +32,16 @@ class TraineeList extends Component {
   };
 
   handleClose = () => {
-    this.setState({ open: false, openRemove: false, openEdit: false });
+    this.setState({
+      open: false, openRemove: false, openEdit: false, data: '',
+    });
   };
 
 
   Submit = (...values) => {
-    this.setState({ open: false, openRemove: false, openEdit: false });
+    this.setState({
+      open: false, openRemove: false, openEdit: false, data: '',
+    });
     const value = Object.assign(values);
     console.log(value);
   };

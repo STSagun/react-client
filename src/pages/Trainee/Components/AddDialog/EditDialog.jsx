@@ -125,7 +125,7 @@ class EditDialog extends Component {
     Object.keys(touched).forEach((element) => {
       if (touched[element] === true) touchCheck += 1;
     });
-    if (check === 2 && touchCheck === 2) return true;
+    if (check === 2 && touchCheck >= 1) return true;
     return false;
   }
 
@@ -146,7 +146,6 @@ class EditDialog extends Component {
     const {
       name, error, email, maxWidth,
     } = this.state;
-
     return (
       <SharedSnackbarConsumer>
         {({ openSnackbar }) => (

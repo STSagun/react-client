@@ -58,7 +58,7 @@ class RemoveDialog extends React.Component {
                   onClick={() => {
                     onSubmit(data);
                     if (traineeData < data.createdAt) return openSnackbar('Successfully Deleted ', 'success');
-                    return openSnackbar('Can not be Deleted ', 'error');
+                    return openSnackbar('Trainee registerd before 14th feb cannot be deleted  ', 'error');
                   }}
                   variant="contained"
                   color="primary"
