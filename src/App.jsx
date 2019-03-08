@@ -20,7 +20,7 @@ const App = () => (
       <Router>
         <Switch>
           <Route exact path="/">
-            <Redirect to="/trainee" />
+            <Redirect to="/login" />
           </Route>
           <AuthRoutes exact path="/login" component={Login} />
           <PrivateRoutes path="/trainee" component={Trainee} />
