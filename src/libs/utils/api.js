@@ -11,6 +11,6 @@ export default async function callApi(method, url, data) {
 
     return response;
   } catch (err) {
-    return err.message;
+    return err.response;
   }
 }

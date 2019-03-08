@@ -185,14 +185,14 @@ class Login extends Component {
       loading: true,
     });
     const result = await callApi('post', 'user/login', { email, password });
-    if (result.data) {
+    if (result.data.status === 'ok') {
       const { data } = result.data;
       localStorage.setItem('Token', data);
       history.push('/trainee');
     } else {
       this.setState({
         loading: false,
-      }, () => openSnackbar(result, 'error'));
+      }, () => openSnackbar(result.data.message, 'error'));
     }
   }
 
