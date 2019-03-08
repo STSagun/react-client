@@ -24,11 +24,16 @@ const styles = {
   },
 };
 
+
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
     };
+  }
+
+  handleClick = () => {
+    localStorage.removeItem('Token');
   }
 
   render() {
@@ -39,9 +44,6 @@ class Navbar extends Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton> */}
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Trainee Portal
             </Typography>
@@ -49,7 +51,7 @@ class Navbar extends Component {
             <Button color="inherit"><Link to="/textfield-demo" className={classes.style}>TEXTFIELD DEMO</Link></Button>
             <Button color="inherit"><Link to="/input-demo" className={classes.style}>INPUT DEMO</Link></Button>
             <Button color="inherit"><Link to="/children-demo" className={classes.style}>CHILDREN DEMO</Link></Button>
-            <Button color="inherit" className={classes.button}>LOGOUT</Button>
+            <Button color="inherit"><Link to="/login" onClick={() => this.handleClick()} className={classes.style}>LogOut</Link></Button>
           </Toolbar>
         </AppBar>
       </div>
