@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { IconButton } from '@material-ui/core';
 import TablePagination from '@material-ui/core/TablePagination';
+import withLoaderAndMessage from '../../../../components/HOC/withLoaderAndMessage';
 
 
 const styles = theme => ({
@@ -63,7 +64,7 @@ class TraineeTable extends React.Component {
 
   render() {
     const {
-      classes, id, columns, data, onSelect, order, orderBy, page, Count, onChangePage, rowsPerPage,
+      classes, id, columns, data, onSelect, order, orderBy, page, count, onChangePage, rowsPerPage,
     } = this.props;
     return (
       <>
@@ -88,7 +89,6 @@ class TraineeTable extends React.Component {
             </TableHead>
             <TableBody>
               {data
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(row => (
                   <TableRow
                     className={classes.tableRow}
@@ -120,7 +120,7 @@ class TraineeTable extends React.Component {
 
           <TablePagination
             component="div"
-            count={Count}
+            count={count}
             rowsPerPage={rowsPerPage}
             page={page}
             rowsPerPageOptions={[]}
@@ -140,7 +140,7 @@ class TraineeTable extends React.Component {
 TraineeTable.defaultProps = {
   order: '',
   orderBy: '',
-  Count: '',
+  count: '',
   page: 0,
   rowsPerPage: '',
 };
@@ -155,9 +155,9 @@ TraineeTable.propTypes = {
   order: PropTypes.string,
   orderBy: PropTypes.string,
   page: PropTypes.number,
-  Count: PropTypes.number,
+  count: PropTypes.number,
   onChangePage: PropTypes.func.isRequired,
   rowsPerPage: PropTypes.number,
 };
 
-export default withStyles(styles)(TraineeTable);
+export default withStyles(styles)(withLoaderAndMessage(TraineeTable));
