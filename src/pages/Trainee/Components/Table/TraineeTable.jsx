@@ -64,7 +64,7 @@ class TraineeTable extends React.Component {
 
   render() {
     const {
-      classes, id, columns, data, onSelect, order, orderBy, page, Count, onChangePage, rowsPerPage,
+      classes, id, columns, data, onSelect, order, orderBy, page, count, onChangePage, rowsPerPage,
     } = this.props;
     return (
       <>
@@ -120,7 +120,7 @@ class TraineeTable extends React.Component {
 
           <TablePagination
             component="div"
-            count={Count}
+            count={count}
             rowsPerPage={rowsPerPage}
             page={page}
             rowsPerPageOptions={[]}
@@ -140,7 +140,7 @@ class TraineeTable extends React.Component {
 TraineeTable.defaultProps = {
   order: '',
   orderBy: '',
-  Count: '',
+  count: '',
   page: 0,
   rowsPerPage: '',
 };
@@ -155,7 +155,7 @@ TraineeTable.propTypes = {
   order: PropTypes.string,
   orderBy: PropTypes.string,
   page: PropTypes.number,
-  Count: PropTypes.number,
+  count: PropTypes.number,
   onChangePage: PropTypes.func.isRequired,
   rowsPerPage: PropTypes.number,
 };

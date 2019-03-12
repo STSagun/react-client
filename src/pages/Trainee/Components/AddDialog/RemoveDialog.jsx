@@ -1,4 +1,5 @@
 import React from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,13 +9,15 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 import { SharedSnackbarConsumer } from '../../../../Contexts/SnackBarProvider/SnackBarProvider';
+import callApi from '../../../../libs/utils/api';
 
 const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
   },
-
 });
+
+
 const propTypes = {
   classes: PropTypes.shape().isRequired,
   open: PropTypes.bool.isRequired,
@@ -25,12 +28,38 @@ const propTypes = {
 
 class RemoveDialog extends React.Component {
   state = {
+    loading: false,
   };
+
+  onClickHandler = async (e, openSnackbar) => {
+    const { data, onSubmit } = this.props;
+    const { _id } = data;
+    this.setState({
+      loading: true,
+    });
+    const res = await callApi('delete', `trainee/${_id}`, {});
+    e.preventDefault();
+    if (res.status) {
+      this.setState({
+        loading: false,
+      });
+      openSnackbar('Successfully Deleted', 'success');
+      onSubmit(data);
+    } else {
+      this.setState({
+        loading: false,
+      });
+      onSubmit(data);
+      openSnackbar('unable to delete', 'error');
+    }
+    console.log('response is ', res);
+  }
 
   render() {
     const {
-      open, onClose, onSubmit, classes, data,
+      open, onClose, classes, data, onSubmit,
     } = this.props;
+    const { loading } = this.state;
     const traineeData = '2019-02-13T18:15:11.778Z';
     return (
       <SharedSnackbarConsumer>
@@ -55,16 +84,16 @@ class RemoveDialog extends React.Component {
               Cancel
                 </Button>
                 <Button
-                  onClick={() => {
-                    onSubmit(data);
-                    if (traineeData < data.createdAt) return openSnackbar('Successfully Deleted ', 'success');
-                    return openSnackbar('Trainee registerd before 14th feb cannot be deleted  ', 'error');
-                  }}
+                  onClick={
+                    (traineeData < data.createdAt) ? (e => this.onClickHandler(e, openSnackbar))
+                      : openSnackbar('Trainee registerd before 14th feb cannot be deleted  ', 'error')
+                  }
                   variant="contained"
                   color="primary"
                   className={classes.button}
+                  disabled={loading}
                 >
-              Delete
+                  { (loading) ? <CircularProgress size={24} /> : <b>Delete</b> }
                 </Button>
               </DialogActions>
             </Dialog>

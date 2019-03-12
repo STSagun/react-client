@@ -6,9 +6,9 @@ const withLoaderAndMessage = (WrappedComponent) => {
     state = {};
 
     render() {
-      const { loading, dataLength} = this.props;
-      if (loading === false && dataLength) return <WrappedComponent {...this.props} />;
-      if (loading === true) {
+      const { loading, dataLength } = this.props;
+      if (!loading && dataLength) return <WrappedComponent {...this.props} />;
+      if (loading) {
         return (
           <div style={{ textAlign: 'center' }}>
             <CircularProgress />

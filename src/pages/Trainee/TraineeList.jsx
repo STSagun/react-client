@@ -27,6 +27,7 @@ class TraineeList extends Component {
       limit: 10,
       dataList: '',
       loading: true,
+      totalCount: 0,
     };
   }
 
@@ -34,7 +35,11 @@ class TraineeList extends Component {
     const { skip, limit } = this.state;
     callApi('get', `trainee?limit=${limit}&skip=${skip}`, {}).then((res) => {
       console.log('respons', res.data.data);
-      this.setState({ dataList: res.data.data.records, loading: false });
+      this.setState({
+        dataList: res.data.data.records,
+        loading: false,
+        totalCount: res.data.data.count,
+      });
     });
   }
 
@@ -97,7 +102,8 @@ class TraineeList extends Component {
 
   render() {
     const {
-      open, order, orderBy, page, rowsPerPage, openRemove, openEdit, data, dataList, loading,
+      open, order, orderBy, page, rowsPerPage, openRemove, openEdit, data,
+      dataList, loading, totalCount,
     } = this.state;
     return (
       <>
@@ -140,7 +146,7 @@ class TraineeList extends Component {
           order={order}
           onSort={this.handleSort}
           onSelect={this.handleSelect}
-          Count={100}
+          count={totalCount}
           page={page}
           onChangePage={this.handleChangePage}
           rowsPerPage={rowsPerPage}
