@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import PropTypes from 'prop-types';
+import green from '@material-ui/core/colors/green';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -16,6 +18,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import * as yup from 'yup';
+import { SharedSnackbarConsumer } from '../../../../Contexts/SnackBarProvider/SnackBarProvider';
+import callApi from '../../../../libs/utils/api';
 
 function getValidationSchema() {
   return yup.object().shape({
@@ -42,7 +46,14 @@ const styles = () => ({
   submit: {
     backgroundColor: '#990099', color: 'white',
   },
-
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
 });
 const propTypes = {
   classes: PropTypes.shape().isRequired,
@@ -57,10 +68,9 @@ class AddDialog extends Component {
     this.state = {
       fullWidth: false,
       maxWidth: 'md',
-      name: '',
       showPassword: false,
       showConfirmPassword: false,
-      passwordConfirmation: '',
+
       error: {
         name: '', email: '', password: '', passwordConfirmation: '',
       },
@@ -76,13 +86,20 @@ class AddDialog extends Component {
         password: false,
         passwordConfirmation: false,
       },
+      loading: false,
+      data: {
+        name: '',
+        email: '',
+        password: '',
+        passwordConfirmation: '',
+      },
     };
   }
 
   handlerChange = field => (event) => {
-    const { touched } = this.state;
+    const { touched, data } = this.state;
     this.setState({
-      [field]: event.target.value,
+      data: { ...data, [field]: event.target.value },
       touched: { ...touched, [field]: true },
     },
     () => this.validate((field)));
@@ -90,13 +107,16 @@ class AddDialog extends Component {
 
   validate = (value) => {
     const {
+      data,
+      error,
+      hasError,
+    } = this.state;
+    const {
       name,
       email,
       password,
       passwordConfirmation,
-      error,
-      hasError,
-    } = this.state;
+    } = data;
     const schema = getValidationSchema();
     schema
       .validate({
@@ -161,146 +181,176 @@ class AddDialog extends Component {
     this.setState(state => ({ showConfirmPassword: !state.showConfirmPassword }));
   };
 
+  handlerSubmit = async (event, openSnackbar) => {
+    const { data } = this.state;
+    const { email, name, password } = data;
+    event.preventDefault();
+    this.setState({
+      loading: true,
+    });
+    const result = await callApi('post', '/trainee', { email, name, password });
+    if (result.data.status === 'ok') {
+      this.setState({
+        loading: false,
+      }, () => openSnackbar(result.data.message, 'success'));
+    } else {
+      this.setState({
+        loading: false,
+      }, () => openSnackbar(result.data.message, 'error'));
+    }
+    this.setState({
+      data: '',
+    });
+  }
+
   render() {
     const {
       classes, open, onClose, onSubmit,
     } = this.props;
     const {
-      showPassword, showConfirmPassword, name, error, email, password,
-      passwordConfirmation, fullWidth, maxWidth,
+      showPassword, showConfirmPassword, error, data,
+      fullWidth, maxWidth, loading,
     } = this.state;
     return (
-      <Dialog
-        fullWidth={fullWidth}
-        maxWidth={maxWidth}
-        open={open}
-        onClose={onClose}
-        onSubmit={onSubmit}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Add Trainee</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+      <SharedSnackbarConsumer>
+        {({ openSnackbar }) => (
+          <Dialog
+            fullWidth={fullWidth}
+            maxWidth={maxWidth}
+            open={open}
+            onClose={onClose}
+            onSubmit={onSubmit}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">Add Trainee</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
               Enter your trainee details
-            <form className={classes.container} noValidate autoComplete="off">
-              <TextField
-                error={(error.name) && error}
-                fullWidth
-                id="outlined-name"
-                label="Name"
-                onChange={this.handlerChange('name')}
-                margin="normal"
-                variant="outlined"
-                value={name}
-                onBlur={() => this.onBlur('name')}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Person />
-                    </InputAdornment>
-                  ),
-                }}
-
-              />
-              {(error.name) ? <p className={classes.error}>{error.name}</p> : ''}
-              <TextField
-                error={(error.email) && error}
-                fullWidth
-                id="outlined-email-input"
-                label="Email"
-                className={classes.textField}
-                onChange={this.handlerChange('email')}
-                type="email"
-                value={email}
-                name="email"
-                onBlur={() => this.onBlur('email')}
-                autoComplete="email"
-                margin="normal"
-                variant="outlined"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Email />
-                    </InputAdornment>
-                  ),
-                }}
-
-              />
-              {(error.email) ? <aside className={classes.error}>{error.email}</aside> : ''}
-              <Grid container spacing={24}>
-                <Grid item xs={12} sm={6}>
+                <form className={classes.container} noValidate autoComplete="off">
                   <TextField
-                    error={(error.password) && error}
-                    id="outlined-password-input"
-                    label="Password"
-                    value={password}
+                    error={(error.name) && error}
+                    fullWidth
+                    id="outlined-name"
+                    label="Name"
+                    onChange={this.handlerChange('name')}
+                    margin="normal"
+                    variant="outlined"
+                    value={data.name}
+                    onBlur={() => this.onBlur('name')}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Person />
+                        </InputAdornment>
+                      ),
+                    }}
+
+                  />
+                  {(error.name) ? <p className={classes.error}>{error.name}</p> : ''}
+                  <TextField
+                    error={(error.email) && error}
+                    fullWidth
+                    id="outlined-email-input"
+                    label="Email"
                     className={classes.textField}
-                    autoComplete="current-password"
+                    onChange={this.handlerChange('email')}
+                    type="email"
+                    value={data.email}
+                    name="email"
+                    onBlur={() => this.onBlur('email')}
+                    autoComplete="email"
                     margin="normal"
                     variant="outlined"
-                    onBlur={() => this.onBlur('password')}
-                    type={showPassword ? 'text' : 'password'}
-                    onChange={this.handlerChange('password')}
                     InputProps={{
-                      endAdornment: (
+                      startAdornment: (
                         <InputAdornment position="start">
-                          <IconButton
-                            aria-label="Toggle password visibility"
-                            onClick={this.handleClickShowPassword}
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
+                          <Email />
                         </InputAdornment>
                       ),
                     }}
 
                   />
-                  {(error.password) ? <aside className={classes.error}>{error.password}</aside> : ''}
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    error={(error.passwordConfirmation) && error}
-                    id="outlined-password-input"
-                    label="Confirm Password"
-                    onBlur={() => this.onBlur('passwordConfirmation')}
-                    autoComplete="current-password"
-                    value={passwordConfirmation}
-                    margin="normal"
-                    variant="outlined"
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    onChange={this.handlerChange('passwordConfirmation')}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="start">
-                          <IconButton
-                            aria-label="Toggle password visibility"
-                            onClick={this.handleClickShowConfirmPassword}
-                          >
-                            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
+                  {(error.email) ? <aside className={classes.error}>{error.email}</aside> : ''}
+                  <Grid container spacing={24}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        error={(error.password) && error}
+                        id="outlined-password-input"
+                        label="Password"
+                        value={data.password}
+                        className={classes.textField}
+                        autoComplete="current-password"
+                        margin="normal"
+                        variant="outlined"
+                        onBlur={() => this.onBlur('password')}
+                        type={showPassword ? 'text' : 'password'}
+                        onChange={this.handlerChange('password')}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="start">
+                              <IconButton
+                                aria-label="Toggle password visibility"
+                                onClick={this.handleClickShowPassword}
+                              >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
 
-                  />
+                      />
+                      {(error.password) ? <aside className={classes.error}>{error.password}</aside> : ''}
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        error={(error.passwordConfirmation) && error}
+                        id="outlined-password-input"
+                        label="Confirm Password"
+                        onBlur={() => this.onBlur('passwordConfirmation')}
+                        autoComplete="current-password"
+                        value={data.passwordConfirmation}
+                        margin="normal"
+                        variant="outlined"
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        onChange={this.handlerChange('passwordConfirmation')}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="start">
+                              <IconButton
+                                aria-label="Toggle password visibility"
+                                onClick={this.handleClickShowConfirmPassword}
+                              >
+                                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
 
-                  {(error.passwordConfirmation) ? <aside className={classes.error}>{error.passwordConfirmation}</aside> : ''}
+                      />
 
-                </Grid>
-              </Grid>
-            </form>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} color="primary">
+                      {(error.passwordConfirmation) ? <aside className={classes.error}>{error.passwordConfirmation}</aside> : ''}
+
+                    </Grid>
+                  </Grid>
+                </form>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={onClose} color="primary">
               Cancel
-          </Button>
-          { this.hasError() ? <Button value="Submit" onClick={() => { onSubmit(name, email, password); }} className={classes.submit} color="primary">Submit</Button> : <Button value="Submit" color="primary" disabled> Submit</Button>
-          }
-        </DialogActions>
-      </Dialog>
-
+              </Button>
+              { this.hasError() ? (
+                <Button value="Submit" onClick={(event) => { onSubmit(data.name, data.email, data.password); this.handlerSubmit(event, openSnackbar); }} className={classes.submit} color="primary">
+            Submit
+                  { loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                </Button>
+              ) : <Button value="Submit" color="primary" disabled> Submit</Button>
+              }
+            </DialogActions>
+          </Dialog>
+        )}
+      </SharedSnackbarConsumer>
     );
   }
 }

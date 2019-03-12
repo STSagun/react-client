@@ -9,6 +9,7 @@ import trainees from './Data/trainee';
 import TraineeTable from './Components/Table/TraineeTable';
 import RemoveDialog from './Components/AddDialog/RemoveDialog';
 import EditDialog from './Components/AddDialog/EditDialog';
+import callApi from '../../libs/utils/api';
 
 class TraineeList extends Component {
   constructor(props) {
@@ -18,14 +19,24 @@ class TraineeList extends Component {
       orderBy: '',
       open: false,
       page: 0,
-      rowsPerPage: 3,
+      rowsPerPage: 10,
       openRemove: false,
       openEdit: false,
       data: '',
+      skip: 0,
+      limit: 10,
+      dataList: '',
+      loading: true,
     };
   }
 
-  getDateFormatted = date => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
+  componentDidMount() {
+    const { skip, limit } = this.state;
+    callApi('get', `trainee?limit=${limit}&skip=${skip}`, {}).then((res) => {
+      console.log('respons', res.data.data);
+      this.setState({ dataList: res.data.data.records, loading: false });
+    });
+  }
 
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -63,8 +74,15 @@ class TraineeList extends Component {
     this.setState({ order: orderChange, orderBy: orderByChange });
   };
 
-  handleChangePage = (event, page) => {
-    this.setState({ page });
+  handleChangePage = (event, pages) => {
+    const newSkip = 10 * (pages);
+    const newLimit = 10;
+    this.setState({
+      page: pages, skip: newSkip, limit: newLimit, loading: true,
+    });
+    callApi('get', `trainee?limit=${newLimit}&skip=${newSkip}`, {}).then((res) => {
+      this.setState({ dataList: res.data.data.records, loading: false });
+    });
   };
 
   handleRemoveDialogOpen = (value) => {
@@ -75,9 +93,11 @@ class TraineeList extends Component {
     this.setState({ openEdit: true, data: value });
   }
 
+  getDateFormatted = date => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
+
   render() {
     const {
-      open, order, orderBy, page, rowsPerPage, openRemove, openEdit, data,
+      open, order, orderBy, page, rowsPerPage, openRemove, openEdit, data, dataList, loading,
     } = this.state;
     return (
       <>
@@ -88,7 +108,7 @@ class TraineeList extends Component {
         </div>
         <TraineeTable
           id="id"
-          data={trainees}
+          data={dataList || trainees}
           columns={[
             {
               field: 'name',
@@ -120,10 +140,12 @@ class TraineeList extends Component {
           order={order}
           onSort={this.handleSort}
           onSelect={this.handleSelect}
-          Count={trainees.length}
+          Count={100}
           page={page}
           onChangePage={this.handleChangePage}
           rowsPerPage={rowsPerPage}
+          loading={loading}
+          dataLength={dataList.length}
         />
 
         {

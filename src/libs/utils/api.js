@@ -7,6 +7,7 @@ export default async function callApi(method, url, data) {
       method,
       url: `https://express-training.herokuapp.com/api/${url}`,
       data,
+      headers: { Authorization: localStorage.getItem('Token') },
     });
 
     return response;

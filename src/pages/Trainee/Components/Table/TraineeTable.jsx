@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { IconButton } from '@material-ui/core';
 import TablePagination from '@material-ui/core/TablePagination';
+import withLoaderAndMessage from '../../../../components/HOC/withLoaderAndMessage';
 
 
 const styles = theme => ({
@@ -88,7 +89,6 @@ class TraineeTable extends React.Component {
             </TableHead>
             <TableBody>
               {data
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(row => (
                   <TableRow
                     className={classes.tableRow}
@@ -160,4 +160,4 @@ TraineeTable.propTypes = {
   rowsPerPage: PropTypes.number,
 };
 
-export default withStyles(styles)(TraineeTable);
+export default withStyles(styles)(withLoaderAndMessage(TraineeTable));
