@@ -1,5 +1,6 @@
 import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import PropTypes from 'prop-types';
 
 const withLoaderAndMessage = (WrappedComponent) => {
   class HOC extends React.Component {
@@ -15,10 +16,14 @@ const withLoaderAndMessage = (WrappedComponent) => {
           </div>
         );
       }
-
+      HOC.propTypes = {
+        loading: PropTypes.bool.isRequired,
+        dataLength: PropTypes.number.isRequired,
+      };
       return <p> OOPS!, No More Data</p>;
     }
   }
   return HOC;
 };
+
 export default withLoaderAndMessage;
