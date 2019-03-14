@@ -16,7 +16,7 @@ class TraineeList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      order: '',
+      order: 'asc',
       orderBy: '',
       open: false,
       page: 0,
@@ -36,7 +36,6 @@ class TraineeList extends Component {
   componentDidMount() {
     const { skip, limit } = this.state;
     callApi('get', `trainee?limit=${limit}&skip=${skip}`, {}).then((res) => {
-      console.log('respons', res.data.data);
       this.setState({
         dataList: res.data.data.records,
         loading: false,
@@ -63,7 +62,7 @@ class TraineeList extends Component {
 
   Submit = (...values) => {
     this.setState({
-      open: false, openRemove: false, openEdit: false, data: '',
+      open: false, openRemove: false, openEdit: false,
     });
     const value = Object.assign(values);
     console.log(value);

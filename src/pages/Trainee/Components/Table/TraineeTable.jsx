@@ -47,8 +47,8 @@ class TraineeTable extends React.Component {
   iconButton = (row) => {
     const { actions, classes } = this.props;
     return (
-      actions.map(action => (
-        <IconButton className={classes.column} onClick={() => action.handler(row)}>
+      actions.map((action, index) => (
+        <IconButton key={parseInt(index.toString(), 10)} className={classes.column} onClick={() => action.handler(row)}>
           {action.icon}
         </IconButton>
       ))
@@ -73,7 +73,7 @@ class TraineeTable extends React.Component {
             <TableHead>
               <TableRow>
                 { columns.map(opt => (
-                  <TableCell key={opt.filed} align={opt.align || 'left'}>
+                  <TableCell key={opt.field} align={opt.align || 'left'}>
                     <TableSortLabel
                       active={orderBy === opt.field}
                       direction={order}
@@ -93,7 +93,7 @@ class TraineeTable extends React.Component {
                 .map(row => (
                   <TableRow
                     className={classes.tableRow}
-                    key={row.id}
+                    key={row.originalId}
 
                   >
                     {columns.map(column => (
@@ -101,7 +101,7 @@ class TraineeTable extends React.Component {
                         key={column.field}
                         align={column.align || 'left'}
                         sortDirection={orderBy === row.id ? order : false}
-                        onClick={() => onSelect(row.id)}
+                        onClick={() => onSelect(row.originalId)}
 
                       >
 

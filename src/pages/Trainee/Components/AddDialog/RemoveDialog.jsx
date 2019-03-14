@@ -23,7 +23,7 @@ const propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  data: PropTypes.objectOf(PropTypes.object).isRequired,
+  data: PropTypes.shape().isRequired,
 };
 
 class RemoveDialog extends React.Component {

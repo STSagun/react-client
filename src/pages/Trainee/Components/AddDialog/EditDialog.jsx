@@ -45,7 +45,7 @@ const propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  data: PropTypes.objectOf(PropTypes.object).isRequired,
+  data: PropTypes.shape().isRequired,
 };
 
 class EditDialog extends Component {
@@ -190,7 +190,7 @@ class EditDialog extends Component {
               Enter your trainee details
                 <form className={classes.container} noValidate autoComplete="off">
                   <TextField
-                    error={(error.name) && error}
+                    error={(!!(error.name) && error)}
                     fullWidth
                     id="outlined-name"
                     label="Name"
@@ -209,7 +209,7 @@ class EditDialog extends Component {
                   />
                   {(error.name) ? <p className={classes.error}>{error.name}</p> : ''}
                   <TextField
-                    error={(error.email) && error}
+                    error={!!((error.email) && error)}
                     fullWidth
                     id="outlined-email-input"
                     label="Email"
