@@ -23,7 +23,7 @@ function NoMatch(props) {
       <Typography component="h2" variant="h2" gutterBottom>
           Not Found
       </Typography>
-      <Typography variant="subheading" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         Seems like for the page you are looking after does not exist
       </Typography>
     </div>

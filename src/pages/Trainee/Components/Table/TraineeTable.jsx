@@ -47,8 +47,8 @@ class TraineeTable extends React.Component {
   iconButton = (row) => {
     const { actions, classes } = this.props;
     return (
-      actions.map(action => (
-        <IconButton className={classes.column} onClick={() => action.handler(row)}>
+      actions.map((action, index) => (
+        <IconButton key={parseInt(index.toString(), 10)} className={classes.column} onClick={() => action.handler(row)}>
           {action.icon}
         </IconButton>
       ))
@@ -73,11 +73,12 @@ class TraineeTable extends React.Component {
             <TableHead>
               <TableRow>
                 { columns.map(opt => (
-                  <TableCell key={opt.filed} align={opt.align || 'left'}>
+                  <TableCell key={opt.field} align={opt.align || 'left'}>
                     <TableSortLabel
                       active={orderBy === opt.field}
                       direction={order}
                       onClick={this.createSortHandler(opt.field)}
+                      key={`${opt.filed}.${opt.filed}`}
                     >
                       {opt.label || opt.field}
                     </TableSortLabel>
@@ -92,7 +93,7 @@ class TraineeTable extends React.Component {
                 .map(row => (
                   <TableRow
                     className={classes.tableRow}
-                    key={row.id}
+                    key={row.originalId}
 
                   >
                     {columns.map(column => (
@@ -100,7 +101,7 @@ class TraineeTable extends React.Component {
                         key={column.field}
                         align={column.align || 'left'}
                         sortDirection={orderBy === row.id ? order : false}
-                        onClick={() => onSelect(row.id)}
+                        onClick={() => onSelect(row.originalId)}
 
                       >
 
@@ -109,7 +110,7 @@ class TraineeTable extends React.Component {
                     ))
                     }
 
-                    <TableCell>
+                    <TableCell key={row.field}>
                       {this.iconButton(row)}
                     </TableCell>
                   </TableRow>
@@ -138,8 +139,6 @@ class TraineeTable extends React.Component {
   }
 }
 TraineeTable.defaultProps = {
-  order: '',
-  orderBy: '',
   count: '',
   page: 0,
   rowsPerPage: '',
@@ -152,8 +151,8 @@ TraineeTable.propTypes = {
   actions: PropTypes.arrayOf(PropTypes.object).isRequired,
   onSelect: PropTypes.func.isRequired,
   onSort: PropTypes.func.isRequired,
-  order: PropTypes.string,
-  orderBy: PropTypes.string,
+  order: PropTypes.string.isRequired,
+  orderBy: PropTypes.string.isRequired,
   page: PropTypes.number,
   count: PropTypes.number,
   onChangePage: PropTypes.func.isRequired,

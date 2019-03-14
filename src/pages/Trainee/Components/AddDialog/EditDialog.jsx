@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
@@ -14,6 +15,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Email from '@material-ui/icons/Email';
 import * as yup from 'yup';
 import { SharedSnackbarConsumer } from '../../../../Contexts/SnackBarProvider/SnackBarProvider';
+import callApi from '../../../../libs/utils/api';
 
 
 function getValidationSchema() {
@@ -43,7 +45,7 @@ const propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  data: PropTypes.objectOf(PropTypes.object).isRequired,
+  data: PropTypes.shape().isRequired,
 };
 
 class EditDialog extends Component {
@@ -66,6 +68,7 @@ class EditDialog extends Component {
         name: false,
         email: false,
       },
+      loading: false,
     };
   }
 
@@ -76,6 +79,29 @@ class EditDialog extends Component {
       touched: { ...touched, [field]: true },
     },
     () => this.validate((field)));
+  }
+
+  onClickHandler = async (e, openSnackbar) => {
+    const { data, onSubmit } = this.props;
+    const { name, email } = this.state;
+    this.setState({
+      loading: true,
+    });
+    const res = await callApi('put', 'trainee', { name, email, id: data.originalId });
+    e.preventDefault();
+    if (res.status === 200) {
+      this.setState({
+        loading: false,
+      });
+      openSnackbar('Editied Successfully', 'success');
+      onSubmit(data);
+    } else {
+      this.setState({
+        loading: false,
+      });
+      onSubmit(data);
+      openSnackbar(res.data.error, 'error');
+    }
   }
 
   validate = (value) => {
@@ -144,7 +170,7 @@ class EditDialog extends Component {
       classes, open, onClose, onSubmit,
     } = this.props;
     const {
-      name, error, email, maxWidth,
+      name, error, email, maxWidth, loading,
     } = this.state;
     return (
       <SharedSnackbarConsumer>
@@ -164,7 +190,7 @@ class EditDialog extends Component {
               Enter your trainee details
                 <form className={classes.container} noValidate autoComplete="off">
                   <TextField
-                    error={(error.name) && error}
+                    error={(!!(error.name) && error)}
                     fullWidth
                     id="outlined-name"
                     label="Name"
@@ -183,7 +209,7 @@ class EditDialog extends Component {
                   />
                   {(error.name) ? <p className={classes.error}>{error.name}</p> : ''}
                   <TextField
-                    error={(error.email) && error}
+                    error={!!((error.email) && error)}
                     fullWidth
                     id="outlined-email-input"
                     label="Email"
@@ -212,7 +238,12 @@ class EditDialog extends Component {
               <Button onClick={onClose} color="primary">
               Cancel
               </Button>
-              { this.hasError() ? <Button value="Submit" onClick={() => { onSubmit(name, email); openSnackbar('Editied Successfully', 'success'); }} className={classes.submit} color="primary">Submit</Button> : <Button value="Submit" color="primary" disabled> Submit</Button>
+              { this.hasError() ? (
+                <Button value="Submit" onClick={e => this.onClickHandler(e, openSnackbar)} disabled={loading} className={classes.submit} color="primary">
+              Submit
+                  { loading && <CircularProgress size={24} />}
+                </Button>
+              ) : <Button value="Submit" color="primary" disabled> Submit</Button>
               }
             </DialogActions>
           </Dialog>

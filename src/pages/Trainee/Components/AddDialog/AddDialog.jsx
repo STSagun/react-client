@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import PropTypes from 'prop-types';
 import green from '@material-ui/core/colors/green';
 import { withStyles } from '@material-ui/core/styles';
@@ -74,12 +75,7 @@ class AddDialog extends Component {
       error: {
         name: '', email: '', password: '', passwordConfirmation: '',
       },
-      touched: {
-        name: false,
-        email: false,
-        password: false,
-        passwordConfirmation: false,
-      },
+      touched: false,
       hasError: {
         name: false,
         email: false,
@@ -87,36 +83,28 @@ class AddDialog extends Component {
         passwordConfirmation: false,
       },
       loading: false,
-      data: {
-        name: '',
-        email: '',
-        password: '',
-        passwordConfirmation: '',
-      },
+      name: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
     };
   }
 
   handlerChange = field => (event) => {
-    const { touched, data } = this.state;
     this.setState({
-      data: { ...data, [field]: event.target.value },
-      touched: { ...touched, [field]: true },
-    },
-    () => this.validate((field)));
-  }
+      [field]: event.target.value,
+    }, () => this.validate((field)));
+  };
 
   validate = (value) => {
-    const {
-      data,
-      error,
-      hasError,
-    } = this.state;
     const {
       name,
       email,
       password,
       passwordConfirmation,
-    } = data;
+      error,
+      hasError,
+    } = this.state;
     const schema = getValidationSchema();
     schema
       .validate({
@@ -129,48 +117,60 @@ class AddDialog extends Component {
         this.setState({
           error: { ...error, [value]: '' },
           hasError: { ...hasError, [value]: false },
+          touched: true,
         });
       })
       .catch((err) => {
-        err.inner.forEach((errors) => {
-          if (errors.path === value) {
-            this.setState({
-              error: { ...error, [value]: errors.message },
-              hasError: { ...hasError, [value]: true },
-            });
-          }
-        });
-        if (!err.inner.some(errors => errors.path === value) && hasError[value]) {
+        if (!err.inner.some(errors => errors.path === value) && hasError) {
           this.setState({
             error: { ...error, [value]: '' },
             hasError: { ...hasError, [value]: false },
+            touched: false,
           });
         }
       });
   }
 
-  hasError = () => {
-    const { hasError, touched } = this.state;
-    let check = 0;
-    let touchCheck = 0;
-    Object.keys(hasError).forEach((element) => {
-      if (hasError[element] === false) check += 1;
+  getError=field => () => {
+    const {
+      name,
+      email,
+      password,
+      passwordConfirmation,
+      hasError,
+      error,
+    } = this.state;
+    const schema = getValidationSchema();
+    schema.validate({
+      name,
+      email,
+      password,
+      passwordConfirmation,
+    }, { abortEarly: false }).catch((err) => {
+      err.inner.forEach((errors) => {
+        if (errors.path === field) {
+          this.setState({
+            error: { ...error, [field]: errors.message },
+            hasError: { ...hasError, [field]: true },
+            touched: false,
+          });
+        }
+      });
     });
-    Object.keys(touched).forEach((element) => {
-      if (touched[element] === true) touchCheck += 1;
-    });
-    if (check === 4 && touchCheck === 4) return true;
-    return false;
   }
 
-  isTouched = () => {
-    const { touched } = this.state;
-    return Object.keys(touched).length;
-  }
-
-
-  onBlur = (value) => {
-    this.validate(value);
+  checkDisabled = () => {
+    const { touched, hasError } = this.state;
+    let result = false;
+    Object.keys(hasError).forEach((error) => {
+      if (hasError[error] === false) {
+        result = true;
+      }
+    });
+    if (touched && result) {
+      return false;
+    }
+    return true;
   }
 
   handleClickShowPassword = () => {
@@ -182,8 +182,8 @@ class AddDialog extends Component {
   };
 
   handlerSubmit = async (event, openSnackbar) => {
-    const { data } = this.state;
-    const { email, name, password } = data;
+    const { email, name, password } = this.state;
+    const { onSubmit } = this.props;
     event.preventDefault();
     this.setState({
       loading: true,
@@ -192,14 +192,21 @@ class AddDialog extends Component {
     if (result.data.status === 'ok') {
       this.setState({
         loading: false,
-      }, () => openSnackbar(result.data.message, 'success'));
+      });
+      onSubmit({ email, name, password });
+      openSnackbar(result.data.message, 'success');
     } else {
       this.setState({
         loading: false,
-      }, () => openSnackbar(result.data.message, 'error'));
+      });
+      onSubmit({ email, name, password });
+      openSnackbar(result.data.message, 'error');
     }
     this.setState({
-      data: '',
+      name: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
     });
   }
 
@@ -208,8 +215,12 @@ class AddDialog extends Component {
       classes, open, onClose, onSubmit,
     } = this.props;
     const {
-      showPassword, showConfirmPassword, error, data,
+      showPassword, showConfirmPassword, error, hasError,
       fullWidth, maxWidth, loading,
+      name,
+      email,
+      password,
+      passwordConfirmation,
     } = this.state;
     return (
       <SharedSnackbarConsumer>
@@ -229,36 +240,38 @@ class AddDialog extends Component {
               Enter your trainee details
                 <form className={classes.container} noValidate autoComplete="off">
                   <TextField
-                    error={(error.name) && error}
+                    error={hasError.name}
                     fullWidth
                     id="outlined-name"
                     label="Name"
                     onChange={this.handlerChange('name')}
                     margin="normal"
                     variant="outlined"
-                    value={data.name}
-                    onBlur={() => this.onBlur('name')}
+                    value={name}
+                    onBlur={this.getError('name')}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <Person />
+                          <IconButton>
+                            <Person />
+                          </IconButton>
                         </InputAdornment>
                       ),
                     }}
 
                   />
-                  {(error.name) ? <p className={classes.error}>{error.name}</p> : ''}
+                  <FormHelperText className={classes.error}>{error.name}</FormHelperText>
                   <TextField
-                    error={(error.email) && error}
+                    error={hasError.email}
                     fullWidth
                     id="outlined-email-input"
                     label="Email"
                     className={classes.textField}
                     onChange={this.handlerChange('email')}
                     type="email"
-                    value={data.email}
+                    value={email}
                     name="email"
-                    onBlur={() => this.onBlur('email')}
+                    onBlur={this.getError('email')}
                     autoComplete="email"
                     margin="normal"
                     variant="outlined"
@@ -271,19 +284,19 @@ class AddDialog extends Component {
                     }}
 
                   />
-                  {(error.email) ? <aside className={classes.error}>{error.email}</aside> : ''}
+                  <FormHelperText className={classes.error}>{error.email}</FormHelperText>
                   <Grid container spacing={24}>
                     <Grid item xs={12} sm={6}>
                       <TextField
-                        error={(error.password) && error}
+                        error={hasError.password}
                         id="outlined-password-input"
                         label="Password"
-                        value={data.password}
+                        value={password}
                         className={classes.textField}
                         autoComplete="current-password"
                         margin="normal"
                         variant="outlined"
-                        onBlur={() => this.onBlur('password')}
+                        onBlur={this.getError('password')}
                         type={showPassword ? 'text' : 'password'}
                         onChange={this.handlerChange('password')}
                         InputProps={{
@@ -293,23 +306,23 @@ class AddDialog extends Component {
                                 aria-label="Toggle password visibility"
                                 onClick={this.handleClickShowPassword}
                               >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
                               </IconButton>
                             </InputAdornment>
                           ),
                         }}
 
                       />
-                      {(error.password) ? <aside className={classes.error}>{error.password}</aside> : ''}
+                      <FormHelperText className={classes.error}>{error.password}</FormHelperText>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
-                        error={(error.passwordConfirmation) && error}
+                        error={hasError.passwordConfirmation}
                         id="outlined-password-input"
                         label="Confirm Password"
-                        onBlur={() => this.onBlur('passwordConfirmation')}
+                        onBlur={this.getError('passwordConfirmation')}
                         autoComplete="current-password"
-                        value={data.passwordConfirmation}
+                        value={passwordConfirmation}
                         margin="normal"
                         variant="outlined"
                         type={showConfirmPassword ? 'text' : 'password'}
@@ -321,15 +334,16 @@ class AddDialog extends Component {
                                 aria-label="Toggle password visibility"
                                 onClick={this.handleClickShowConfirmPassword}
                               >
-                                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
                               </IconButton>
                             </InputAdornment>
                           ),
                         }}
 
                       />
-
-                      {(error.passwordConfirmation) ? <aside className={classes.error}>{error.passwordConfirmation}</aside> : ''}
+                      <FormHelperText className={classes.error}>
+                        {error.passwordConfirmation}
+                      </FormHelperText>
 
                     </Grid>
                   </Grid>
@@ -340,8 +354,8 @@ class AddDialog extends Component {
               <Button onClick={onClose} color="primary">
               Cancel
               </Button>
-              { this.hasError() ? (
-                <Button value="Submit" onClick={(event) => { onSubmit(data.name, data.email, data.password); this.handlerSubmit(event, openSnackbar); }} className={classes.submit} color="primary">
+              { !this.checkDisabled() ? (
+                <Button value="Submit" onClick={(event) => { onSubmit(); this.handlerSubmit(event, openSnackbar); }} className={classes.submit} color="primary">
             Submit
                   { loading && <CircularProgress size={24} className={classes.buttonProgress} />}
                 </Button>
