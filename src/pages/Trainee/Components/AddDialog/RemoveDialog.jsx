@@ -52,7 +52,6 @@ class RemoveDialog extends React.Component {
       onSubmit(data);
       openSnackbar('unable to delete', 'error');
     }
-    console.log('response is ', res);
   }
 
   render() {

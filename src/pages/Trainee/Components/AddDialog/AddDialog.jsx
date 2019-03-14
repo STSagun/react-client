@@ -184,6 +184,7 @@ class AddDialog extends Component {
   handlerSubmit = async (event, openSnackbar) => {
     const { data } = this.state;
     const { email, name, password } = data;
+    const { onSubmit } = this.props;
     event.preventDefault();
     this.setState({
       loading: true,
@@ -192,11 +193,15 @@ class AddDialog extends Component {
     if (result.data.status === 'ok') {
       this.setState({
         loading: false,
-      }, () => openSnackbar(result.data.message, 'success'));
+      });
+      onSubmit(data);
+      openSnackbar(result.data.message, 'success');
     } else {
       this.setState({
         loading: false,
-      }, () => openSnackbar(result.data.message, 'error'));
+      });
+      onSubmit(data);
+      openSnackbar(result.data.message, 'error');
     }
     this.setState({
       data: '',
@@ -247,7 +252,7 @@ class AddDialog extends Component {
                     }}
 
                   />
-                  {(error.name) ? <p className={classes.error}>{error.name}</p> : ''}
+                  {(error.name) ? <aside className={classes.error}>{error.name}</aside> : ''}
                   <TextField
                     error={(error.email) && error}
                     fullWidth
@@ -293,7 +298,7 @@ class AddDialog extends Component {
                                 aria-label="Toggle password visibility"
                                 onClick={this.handleClickShowPassword}
                               >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
                               </IconButton>
                             </InputAdornment>
                           ),
@@ -321,7 +326,7 @@ class AddDialog extends Component {
                                 aria-label="Toggle password visibility"
                                 onClick={this.handleClickShowConfirmPassword}
                               >
-                                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
                               </IconButton>
                             </InputAdornment>
                           ),
